@@ -1,0 +1,33 @@
+{
+  "name": "jacktrader-app",
+  "version": "0.1.0",
+  "description": "Helping SMEs sell and manage what they make, and for customers to buy things in a smarter way.",
+  "main": "app.js",
+  "scripts": {
+    "test": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benjotaiba/jacktrader-app.git"
+  },
+  "keywords": [
+    "business",
+    "SMEs",
+    "trading",
+    "buying",
+    "selling"
+  ],
+  "author": "benjotaiba@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benjotaiba/jacktrader-app/issues"
+  },
+  "homepage": "https://github.com/benjotaiba/jacktrader-app#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
