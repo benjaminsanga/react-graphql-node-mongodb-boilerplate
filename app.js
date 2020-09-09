@@ -1,70 +1,31 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const graphQlHttp = require('express-graphql');
-const { buildSchema } = require("graphql");
 const mongoose = require('mongoose');
-const Event = require('./models/events');
+
+const graphqlSchema = require('./graphql/schema/index');
+const graphqlResolver = require('./graphql/resolvers/index')
+const isAuth = require('./middleware/is-auth');
 
 const app = express();
 
 app.use(bodyParser.json());
 
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS')
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+    next();
+});
+
+app.use(isAuth);
+
 app.use('/graphql', graphQlHttp.graphqlHTTP({ // change /graphql to /api
-    schema: buildSchema(`
-        type Event {
-            _id: ID!
-            title: String!
-            description: String!
-            price: Float!
-            date: String!
-        }
-
-        input EventInput {
-            title: String!
-            description: String!
-            price: Float!
-            date: String!
-        }
-
-        type RootQuery {
-            events: [Event!]!
-        }
-
-        type RootMutation {
-            createEvent(eventInput: EventInput): Event
-        }
-
-        schema {
-            query: RootQuery
-            mutation: RootMutation
-        }
-    `),
-    rootValue: {
-        events: () => {
-            return Event.find().then(events => {
-                return events.map(event => {
-                    return { ...event._doc, _id: event.id };
-                });
-            }).catch(err => {
-                throw err;
-            });
-        },
-        createEvent: (args) => {
-            const event = new Event({
-                title: args.eventInput.title,
-                description: args.eventInput.description,
-                price: +args.eventInput.price,
-                date: new Date(args.eventInput.date)
-            });            
-            return  event.save().then(result => {
-                console.log(result)
-                return {...result._doc};
-            }).catch(err => {
-                console.log(err);
-                throw err;
-            });
-        }
-    },
+    schema: graphqlSchema,
+    rootValue: graphqlResolver,
     graphiql: true
 }));
 
@@ -72,7 +33,7 @@ mongoose.connect(
     `mongodb+srv://BenTaiba:UHkzFaL6jKMuvJb@cluster0.8wlvn.mongodb.net/jacktrader-db?retryWrites=true&w=majority`,
     { useNewUrlParser: true, useUnifiedTopology: true }
 ).then(()=>{
-    app.listen(3000, () => {
+    app.listen(8000, () => {
         console.log('app started: listening at port 3000');
     });
 })
