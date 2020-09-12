@@ -4,7 +4,7 @@ const graphQlHttp = require('express-graphql');
 const mongoose = require('mongoose');
 
 const graphqlSchema = require('./graphql/schema/index');
-const graphqlResolver = require('./graphql/resolvers/index')
+const graphqlResolver = require('./graphql/resolvers/index');
 const isAuth = require('./middleware/is-auth');
 
 const app = express();
@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 
 app.use(isAuth);
 
-app.use('/graphql', graphQlHttp.graphqlHTTP({ // change /graphql to /api
+app.use('/graphql', graphQlHttp.graphqlHTTP({ // change /graphql to /jcktrdr
     schema: graphqlSchema,
     rootValue: graphqlResolver,
     graphiql: true
@@ -34,7 +34,7 @@ mongoose.connect(
     { useNewUrlParser: true, useUnifiedTopology: true }
 ).then(()=>{
     app.listen(8000, () => {
-        console.log('app started: listening at port 3000');
+        console.log('app started: listening at port 8000');
     });
 })
 .catch(err=>{

@@ -9,7 +9,7 @@ module.exports = {
             throw new Error('Unauthenticated!');
         }
         try {
-            const bookings = await Booking.find();
+            const bookings = await Booking.find({user: req.userId});
             return bookings.map(booking => {
                 return transformBooking(booking);
             })
@@ -26,8 +26,7 @@ module.exports = {
             user: req.userId,
             event: fetchedEvent
         });
-        const result = await booking.save();
-        // console.log(args);
+        const result = await booking.save();        
         return transformBooking(result);
     },
     cancelBooking: async (args, req) => {
