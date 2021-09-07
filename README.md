@@ -1,4 +1,3 @@
 # Complete App Boilerplate
 
-Developed from a tutorial by Academind channel on YouTube. Will be utilized as a boiler plate for full stack apps, SPA using the MERN stack, and GraphQL for APIs.
-
+Modified to suit JackTrader, an app I attempted to build with a team of newbies :)
